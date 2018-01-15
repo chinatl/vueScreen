@@ -1,0 +1,86 @@
+html,body,h1,h2,h3,h4,div,a,p,ul,li,img {
+    margin: 0;
+    padding: 0;
+}
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.clearfix:after {
+    content: "";
+    height: 0;
+    line-height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.boxborder {
+    border: 3px solid #21304d;
+    border-radius: 20px 20px 20px 20px;
+}
+
+.container {
+    width: 1910px;
+    margin:0 auto;
+}
+
+.boxtitle {
+    padding-bottom: 10px;
+    position: relative;
+    z-index: 30
+}
+
+.boxtitle .boxtitle_cn {
+    padding: 0 20px;
+    color: #E6A94B;
+    font: normal bold 30px '微软雅黑';
+}
+
+.boxtitle .boxtitle_en {
+    padding: 0 20px;
+    color: #E6A94B;
+    font-size: 19px;
+}
+
+.righttitle {
+    text-align: right
+}
+.wanyuan:after {
+    content: '单位：万元';
+    position: absolute;
+    top: 32px;
+    right: 26px;
+    color: #E7A94B;
+    font-size: 22px;
+    font-weight: 900;
+    
+}
+
+
+
+
+
+
+
+
+
+
