@@ -7,6 +7,8 @@ import store from '@/store'
 import ECharts from 'vue-echarts/components/ECharts.vue'
 // import ECharts modules manually to reduce bundle size
 import echarts from 'echarts'
+/*connect to websocket*/
+
 Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;
 //(function(window) {
@@ -28,6 +30,28 @@ Vue.config.productionTip = false;
 //	} //初始页面
 //})(window);
 import '@/assets/css/reset.css'
+
+import SockJs from '@/assets/js/sock'
+import {Stomp} from '@/assets/js/stomp.min.js'
+//import Stomp from 'webstomp-client'
+
+function getQueryString() {
+	var URL = location.search;
+	if (URL.indexOf('dev=1') !== -1) {
+		return '7001'
+	} else {
+		return '17001'
+	}
+}
+var PORT = getQueryString();
+console.log(PORT)
+console.log(SockJS)
+console.log(Stomp)
+var socket = new SockJS('http://10.184.1.22:' + PORT + '/websocket');
+var webstomp = Stomp.over(socket);
+webstomp.subscribe('/topic/prem-' + 'I' + '-today-' + 610000, data => {
+	console.log(data)
+})
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',

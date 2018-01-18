@@ -33,7 +33,9 @@
 <script>
 	import myChart from './charts'
 	export default {
-		components:{myChart},
+		components: {
+			myChart
+		},
 		data() {
 			return {
 
@@ -49,16 +51,7 @@
 <style scoped>
 	.content {
 		height: 640px;
-		width: 470px;
-		background-color: #ccc
-	}
-	
-	.title_item>ul>li>p.block b {
-		width: 19px;
-		height: 19px;
-		display: inline-block;
-		vertical-align: baseline;
-		margin-right: 4px;
+		padding: 24px
 	}
 	
 	.items {
@@ -85,4 +78,38 @@
 	.ten {
 		background-color: #00E3EF;
 	}
+	
+	.title {
+		color: #fff;
+		text-align: left;
+		height: 40px;
+		overflow: hidden;
+		font: normal normal 30px '微软雅黑';
+	}
+	
+	.title_item h3 {
+		font-size: 42px;
+		font-family: "微软雅黑";
+		font-weight: normal;
+		color: #FDDA51;
+		margin-top: 6px;
+	}
+	
+	.title_item>ul>li>p {
+		color: #43BDEB;
+		font-size: 19px;
+		font-family: "微软雅黑";
+		text-align: right;
+		margin: 3px 0;
+		height: 26px;
+	}
+	
+	.title_item>ul>li>p.block b {
+		width: 19px;
+		height: 19px;
+		display: inline-block;
+		vertical-align: baseline;
+		margin-right: 4px;
+	}
+
 </style>

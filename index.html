@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>director</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<title>中国人寿陕西分公司作战指挥室</title>
+	<style>
+		body {
+			background: url('./static/img/bgc.jpg') no-repeat center top;
+			background-color: #efefef;
+			transform-origin: 0 0;
+			width: 1920px;
+		}
+		#app {
+			position: relative;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app"></div>
+	<script>
+		function fn() {
+			var width = window.screen.availWidth;
+			var x = width / 1920;
+			var container =window.document.getElementById('app');
+			if (width > 1920) {
+				window.document.body.style.transform = 'scale(1)';
+			} else {
+				window.document.body.style.transform = 'scale(' + x + ')';
+			}
+			window.document.body.style.height = '600px'
+//			window.document.body.style.backgroundSize = width + 'px ' + (height + 100) + 'px';
+		}
+		window.onload = function (){
+			fn();
+		}
+		window.onresize = function() {
+			fn()
+		} //初始页面
+	</script>
+	<!-- built files will be auto injected -->
+</body>
+
 </html>

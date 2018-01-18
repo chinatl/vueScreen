@@ -15,7 +15,10 @@
 		},
 		mounted() {
 			this.chart = this.$echarts.init(this.$refs.charts);
-			xdata = ''
+			var xdata = ['西安','陕西','陕西','陕西','陕西','陕西','陕西','陕西','陕西','陕西']
+			var data1 = [100,200,200,200,200,200,200,200,200,200];
+			var data2 = [100,200,200,200,200,200,200,200,200,200];
+			var data3 = [100,200,200,200,200,200,200,200,200,200];
 			this.chart.setOption({
 				grid: {
 					left: '0%',
