@@ -31,7 +31,7 @@
 </template>
 
 <script>
-	import myChart from './charts'
+	import myChart from './chart'
 	export default {
 		components: {
 			myChart

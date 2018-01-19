@@ -7,11 +7,11 @@
 		<div class='content boxborder'>
 			<div class="bigtable">当日录单TOP10</div>
 			<ul class="animateten">
-				<li v-for='(v,index) in arr'>
+				<li v-for='(v,index) in this.$props.data'>
 					<span :style='color(index)'>{{index + 1}}</span>
-					<span>{{v.name}}</span>
-					<span>{{v.ranking}}</span>
-					<span>{{v.age}}</span>
+					<span>{{v.salesBranchCode | branch}}</span>
+					<span>{{v.salesName}}</span>
+					<span>{{v.prem | round}}</span>
 				</li>
 			</ul>
 		</div>
@@ -22,33 +22,14 @@
 	export default {
 		data() {
 			return {
-				arr: [{
-					name: '张三',
-					age: '20',
-					sex: '男性',
-					ranking: '21312'
-				}, {
-					name: '张三',
-					age: '20',
-					sex: '男性',
-					ranking: '21312'
-				}, {
-					name: '张三',
-					age: '20',
-					sex: '男性',
-					ranking: '21312'
-				}, {
-					name: '张三',
-					age: '20',
-					sex: '男性',
-					ranking: '21312'
-				}, {
-					name: '张三',
-					age: '20',
-					sex: '男性',
-					ranking: '21312'
-				}, ]
 			}
+		},
+		props:['data'],
+		created(){
+			console.log(this.$props.data)
+		},
+		mounted(){
+			console.log(this.$props.data)
 		},
 		methods: {
 			color(index) {

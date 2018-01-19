@@ -8,32 +8,17 @@ import ECharts from 'vue-echarts/components/ECharts.vue'
 // import ECharts modules manually to reduce bundle size
 import echarts from 'echarts'
 /*connect to websocket*/
-
+import Branch from '@/assets/data/branch.json'
 Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;
-//(function(window) {
-//	function fn() {
-//		var width = window.screen.width;
-//		var height = window.screen.height;
-//		var x = width / 1920;
-//		var container = window.document.getElementById('app');
-//		if(width > 1920){
-//			container.style.transform = 'scale(1)';
-//		}else {
-//			container.style.transform = 'scale(' + x + ')';
-//		}
-//		document.body.style.backgroundSize = width + 'px ' + (height + 100) + 'px';
-//	}
-//	fn();
-//	window.onresize = function() {
-//		fn()
-//	} //初始页面
-//})(window);
 import '@/assets/css/reset.css'
+//console.log(SockJS);
+//import VueWebsocket from "vue-websocket";
+//Vue.use(VueWebsocket, "http://10.184.1.22:17001/websocket");
+//stompClient.subscribe('/topic/in-force-prem-target', data => {
+//	console.log(data)
+//})
 
-import SockJs from '@/assets/js/sock'
-import {Stomp} from '@/assets/js/stomp.min.js'
-//import Stomp from 'webstomp-client'
 
 function getQueryString() {
 	var URL = location.search;
@@ -44,13 +29,24 @@ function getQueryString() {
 	}
 }
 var PORT = getQueryString();
-console.log(PORT)
-console.log(SockJS)
-console.log(Stomp)
 var socket = new SockJS('http://10.184.1.22:' + PORT + '/websocket');
-var webstomp = Stomp.over(socket);
-webstomp.subscribe('/topic/prem-' + 'I' + '-today-' + 610000, data => {
-	console.log(data)
+var stompClient = Stomp.over(socket);
+Vue.prototype.$sock = stompClient;
+/*注册全局过滤器*/
+Vue.filter('round', value => {
+	if (value) {
+		return Math.round((value - 0) / 10000) + '万'
+	}
+})
+Vue.filter('branch',value =>{
+	if(value){
+		return Branch[value]
+	}
+})
+Vue.filter('number',value =>{
+	if(value){
+		return (value+'').replace(/\d(?=(?:\d{3})+\b)/g,'$&,')
+	}
 })
 /* eslint-disable no-new */
 new Vue({

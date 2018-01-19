@@ -2,24 +2,24 @@
   <div id="app" :style='note'>
   	<div class="top-area">
 		<div class="daily">
-			<daily></daily>
+			<daily :data='dailyData'></daily>
 		</div>
 		<div class="insurance">
 			
 		</div>
 		<div class="Socer">
-			<socer></socer>
+			<socer :data='socerData'></socer>
 		</div>
   	</div>
   	<div class='bottom-area'>
 		<div class="platform">
-			<platform></platform>
+			<platform :data='platformData'></platform>
 		</div>
 		<div class="news">
-			<news></news>
+			<news :data='newsData'></news>
 		</div>
 		<div class="ranking">
-			<ranking></ranking>
+			<ranking :data='rankingData'></ranking>
 		</div>
   	</div>
   </div>
@@ -32,6 +32,11 @@
 	import Platform from '@/components/Platform'; /*保费平台*/
 	import News from '@/components/News'; /*录单快报*/
 	import Ranking from '@/components/Ranking'; /*险种排名*/
+
+	import SockJs from '@/assets/js/sock'
+	import {
+		Stomp
+	} from '@/assets/js/stomp.min.js'
 	export default {
 		components: {
 			Daily,
@@ -47,8 +52,36 @@
 				note: {
 					backgroundImage: "url(" + require("@/assets/img/bgc.jpg") + ")",
 					backgroundRepeat: "no-repeat"
-				}
+				},
+				socerData:[],
+				dailyData:null,
+				platformData:[],
+				rankingData:[],
+				newsData:[]
 			}
+		},
+		created() {
+			this.$sock.connect({}, frame => {
+				this.$sock.subscribe('/topic/prem-' + 'input' + '-today-' + '610000', data => {
+//					console.log(data)
+				})
+				this.$sock.subscribe(`/topic/top-sales-hugecontract-input-610000`, data => {
+					this.socerData = JSON.parse(data.body);/*右上当日录单top10的数据*/
+				})
+				this.$sock.subscribe('/topic/prem-'+'input'+'-curve-day-'+610000, data=> {
+					this.platformData = JSON.parse(data.body);/*左下保费平台的数据*/
+				});
+				this.$sock.subscribe('/topic/top-pol-'+610000, data=> {
+					this.rankingData = JSON.parse(data.body);/*右下险种排名的数据*/
+				});
+				this.$sock.subscribe(`/topic/prem-express`, data=> {
+					console.log(data.body)
+					this.newsData = JSON.parse(data.body);/*中下录单快报的数据*/
+				});
+			})
+		},
+		mounted() {
+			
 		}
 	}
 
