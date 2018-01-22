@@ -5,7 +5,7 @@
 			<daily :data='dailyData'></daily>
 		</div>
 		<div class="insurance">
-			
+			<prem :data='premData'></prem>
 		</div>
 		<div class="Socer">
 			<socer :data='socerData'></socer>
@@ -19,7 +19,7 @@
 			<news :data='newsData'></news>
 		</div>
 		<div class="ranking">
-			<ranking :data='rankingData'></ranking>
+			<Insurance :data='rankingData'></Insurance>
 		</div>
   	</div>
   </div>
@@ -27,16 +27,11 @@
 
 <script>
 	import Daily from '@/components/Daily'; /*当日录单*/
-	import Insurance from '@/components/Insurance';
-	import Socer from '@/components/Socer'; /*排行榜*/
+	import Prem from '@/components/Prem'; /*middle modules*/
 	import Platform from '@/components/Platform'; /*保费平台*/
 	import News from '@/components/News'; /*录单快报*/
-	import Ranking from '@/components/Ranking'; /*险种排名*/
-
-	import SockJs from '@/assets/js/sock'
-	import {
-		Stomp
-	} from '@/assets/js/stomp.min.js'
+	import Socer from '@/components/Socer'; /*排行榜*/
+	import Insurance from '@/components/Insurance';/*险种排名*/
 	export default {
 		components: {
 			Daily,
@@ -44,7 +39,7 @@
 			Socer,
 			News,
 			Platform,
-			Ranking
+			Prem
 		},
 		name: 'home',
 		data() {
@@ -54,31 +49,60 @@
 					backgroundRepeat: "no-repeat"
 				},
 				socerData:[],
-				dailyData:null,
 				platformData:[],
 				rankingData:[],
-				newsData:[]
+				newsData:[],
+				premData:{},
+				dailyData:{}
 			}
 		},
 		created() {
 			this.$sock.connect({}, frame => {
-				this.$sock.subscribe('/topic/prem-' + 'input' + '-today-' + '610000', data => {
-//					console.log(data)
+				this.$sock.subscribe(`/topic/prem-input-today-${this.$store.state.branch}`, data => {
+					if(JSON.parse(data.body) + '' === 'null'){
+						return 
+					}
+					this.dailyData = JSON.parse(data.body);/*上左当日录单的数据*/
 				})
-				this.$sock.subscribe(`/topic/top-sales-hugecontract-input-610000`, data => {
-					this.socerData = JSON.parse(data.body);/*右上当日录单top10的数据*/
+				this.$sock.subscribe(`/topic/prem-input-total-${this.$store.state.branch}`, data=> {
+					if(JSON.parse(data.body) + '' === 'null'){
+						return 
+					}
+					this.premData = JSON.parse(data.body);//上中数据
 				})
-				this.$sock.subscribe('/topic/prem-'+'input'+'-curve-day-'+610000, data=> {
-					this.platformData = JSON.parse(data.body);/*左下保费平台的数据*/
+				this.$sock.subscribe(`/topic/top-sales-hugecontract-input-${this.$store.state.branch}`, data => {
+					if(JSON.parse(data.body) + '' === 'null'){
+						return 
+					}
+					this.socerData = JSON.parse(data.body);/*上右当日录单top10的数据*/
+				})
+				this.$sock.subscribe(`/topic/prem-input-curve-day-${this.$store.state.branch}`, data=> {
+					if(JSON.parse(data.body) + '' === 'null'){
+						return 
+					}
+					this.platformData = JSON.parse(data.body);/*下左保费平台的数据*/
 				});
-				this.$sock.subscribe('/topic/top-pol-'+610000, data=> {
-					this.rankingData = JSON.parse(data.body);/*右下险种排名的数据*/
+				this.$sock.subscribe(`/topic/top-pol-${this.$store.state.branch}`, data=> {
+					if(JSON.parse(data.body) + '' === 'null'){
+						return 
+					}
+					this.rankingData = JSON.parse(data.body);/*下右险种排名的数据*/
 				});
 				this.$sock.subscribe(`/topic/prem-express`, data=> {
-					console.log(data.body)
-					this.newsData = JSON.parse(data.body);/*中下录单快报的数据*/
+					if(JSON.parse(data.body) + '' === 'null'){
+						return 
+					}
+					this.newsData = JSON.parse(data.body);/*下中录单快报的数据*/
 				});
+//				this.$sock.subscribe(`/topic/in-force-prem-target`,data=>{
+//					var datalist = JSON.parse(data.body);
+//				})
 			})
+			this.$sock.onclose = function() {
+				if (window.confirm('服务器断开连接，请重新连接')) {
+					location.reload();
+				}
+			};
 		},
 		mounted() {
 			
@@ -106,7 +130,7 @@
 	
 	.top-area .insurance,
 	.bottom-area .news {
-		width: 840px;
+		width: 820px;
 	}
 	
 	.top-area .Socer,

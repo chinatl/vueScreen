@@ -27,14 +27,18 @@
 		created() {},
 		watch: {
 			'$props.data' (newData, oldData) {
-				console.log(newData, oldData)
+				console.log(JSON.stringify(newData))
+				console.log(JSON.stringify(oldData))
 				if (this.listData.length === 0) {
 					this.listData = this.$props.data;
 					this.scroll(5)
 				} else {
-					let arr = this.removeSame(newData,oldData);
-					this.scroll(arr.length)
+					var arr = this.removeSame(newData,oldData);
 					console.log(arr)
+					if(arr.length){
+						this.listData.push(...arr)
+						this.scroll(arr.length);
+					}
 				}
 			}
 		},
@@ -44,7 +48,7 @@
 				animate(this.$refs.ul, {
 					top: -42*this.num
 				}, e => {
-					console.log(1)
+					
 				})
 			},
 			removeSame(newDate,oldDate) {
@@ -57,7 +61,7 @@
 						}
 					}
 					if (flag) {
-						newArr.push(arr[i])
+						newArr.push(newDate[i])
 					}
 					flag = true;
 				}

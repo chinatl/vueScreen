@@ -1,14 +1,14 @@
 <template>
 	<div>
-		<div class='boxtitle righttitle' id="checkList">
-			<p class="boxtitle_cn">排行榜</p>
-			<p class="boxtitle_en">Ranking List</p>
+		<div class='boxtitle righttitle'>
+			<p class="boxtitle_cn" id='todayprem'>险种排名</p>
+			<p class="boxtitle_en" id='todayprem_en'>Insurance Ranking List</p>
 		</div>
 		<div class='content boxborder'>
 			<ul>
-				<li class="insurance">
-					<p class="insurance_title"><span>国寿盛世御享</span><span>53871万</span></p>
-					<p class="zhuzi" style="width:332.28000000000003px"></p>
+				<li class="insurance" v-for='(v,index) in $props.data'>
+					<p class="insurance_title"><span>{{v.polName}}</span><span>{{v.prem | round}}</span></p>
+					<p class="zhuzi" :style="{width: (v.proportion< 0.05 ? 0.05 : v.proportion )*434  +'px'}"></p>
 				</li>
 			</ul>
 		</div>
@@ -18,14 +18,13 @@
 <script>
 	export default {
 		data() {
-			return {}
+			return {
+			}
 		},
 		props: ['data'],
 		created() {
-			console.log(this.$props.data)
 		},
 		mounted() {
-			console.log(this.$props.data)
 		},
 		methods: {
 
@@ -37,8 +36,8 @@
 
 <style scoped>
 	.content {
-		height: 640px;
-		padding: 24px
+		height: 230px;
+		padding: 10px
 	}
 	
 	.insurance {
@@ -51,6 +50,13 @@
 		color: #43bdeb;
 		display: flex;
 		justify-content: space-between;
+	}
+	
+	.insurance .zhuzi {
+		background-color: #43bdeb;
+		height: 6px;
+		overflow: hidden;
+		width: 100%;
 	}
 
 </style>

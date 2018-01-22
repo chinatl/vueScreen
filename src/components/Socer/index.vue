@@ -1,7 +1,7 @@
 <template>
-	<div>
-		<div class='boxtitle righttitle' id="checkList">
-			<p class="boxtitle_cn">排行榜</p>
+	<div class="layout">
+		<div class='boxtitle righttitle'>
+			<p class="boxtitle_cn"><span  @click='openmask'>排行榜</span></p>
 			<p class="boxtitle_en">Ranking List</p>
 		</div>
 		<div class='content boxborder'>
@@ -15,23 +15,29 @@
 				</li>
 			</ul>
 		</div>
+		<div class="picker" v-show='$store.state.maskShow'>
+			<picker></picker>
+		</div>
 	</div>
 </template>
 
 <script>
+	import picker from '../Picker'
 	export default {
+		components:{picker},
 		data() {
 			return {
 			}
 		},
 		props:['data'],
 		created(){
-			console.log(this.$props.data)
 		},
 		mounted(){
-			console.log(this.$props.data)
 		},
 		methods: {
+			openmask(){
+				this.$store.commit('check')
+			},
 			color(index) {
 				if (index < 3) {
 					return {
@@ -49,6 +55,9 @@
 </script>
 
 <style scoped>
+	.boxtitle {
+		cursor: pointer
+	}
 	.content {
 		height: 640px;
 		padding: 24px
@@ -121,5 +130,13 @@
 		width: 75px;
 		text-align: right
 	}
+	.layout {
+		position: relative
 
+	}
+	.picker {
+		position: absolute;
+		top: 75px;
+		right: 0;
+	}
 </style>
